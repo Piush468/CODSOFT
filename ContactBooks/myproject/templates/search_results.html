@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        }
+
+        a.back-btn {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        a.back-btn:hover {
+            background: linear-gradient(45deg, #764ba2, #667eea);
+            transform: scale(1.05);
+        }
+
+        ul {
+            list-style: none;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        li {
+            background: rgba(255, 255, 255, 0.9);
+            margin: 10px 0;
+            padding: 15px 20px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        li:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .contact-info {
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .actions a {
+            margin-left: 10px;
+            text-decoration: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .edit-btn {
+            background: #2196F3;
+        }
+
+        .edit-btn:hover {
+            background: #0b7dda;
+        }
+
+        .delete-btn {
+            background: #f44336;
+        }
+
+        .delete-btn:hover {
+            background: #da190b;
+        }
+
+        li.empty {
+            text-align: center;
+            color: #555;
+            background: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+        }
+
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        
+        @media (max-width: 600px) {
+            li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .actions {
+                display: flex;
+                gap: 10px;
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Search Results for "{{ query }}"</h1>
+
+    <a href="{% url 'home' %}" class="back-btn">⬅️ Back to Home</a>
+
+    <ul>
+        {% for contact in results %}
+            <li class="fade-in">
+                <span class="contact-info">{{ contact.name }} - {{ contact.phone }}</span>
+                <div class="actions">
+                    <a href="{% url 'edit_contact' contact.id %}" class="edit-btn">Edit</a>
+                    <a href="{% url 'delete_contact' contact.id %}" class="delete-btn">Delete</a>
+                </div>
+            </li>
+        {% empty %}
+            <li class="empty fade-in">No contacts found.</li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        
+        const items = document.querySelectorAll('li');
+        items.forEach((item, i) => {
+            item.style.animationDelay = `${i * 0.1}s`;
+        });
+    </script>
+</body>
+</html>

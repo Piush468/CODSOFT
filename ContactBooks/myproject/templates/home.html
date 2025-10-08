@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact List</title>
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        }
+
+        
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 250px;
+            padding: 10px 15px;
+            border-radius: 25px 0 0 25px;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 0 25px 25px 0;
+            background: #4CAF50;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        
+        a.add-btn {
+            display: inline-block;
+            background: #ff9800;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 25px;
+            transition: 0.3s;
+        }
+
+        a.add-btn:hover {
+            background: #e68900;
+        }
+
+        
+        ul {
+            list-style: none;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        li {
+            background: rgba(255, 255, 255, 0.9);
+            margin: 10px 0;
+            padding: 15px 20px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        li:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+        }
+
+        .contact-info {
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .actions a {
+            margin-left: 10px;
+            text-decoration: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .edit-btn {
+            background: #2196F3;
+        }
+
+        .edit-btn:hover {
+            background: #0b7dda;
+        }
+
+        .delete-btn {
+            background: #f44336;
+        }
+
+        .delete-btn:hover {
+            background: #da190b;
+        }
+
+        
+        li.empty {
+            text-align: center;
+            background: rgba(255,255,255,0.6);
+            color: #555;
+        }
+
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <h1>📇 Contact List</h1>
+
+    <form method="GET" action="{% url 'search_contact' %}">
+        <input type="text" name="q" placeholder="Search...">
+        <button type="submit">Search</button>
+    </form>
+
+    <a href="{% url 'add_contact' %}" class="add-btn">➕ Add Contact</a>
+
+    <ul id="contact-list">
+        {% for contact in contacts %}
+            <li class="fade-in">
+                <span class="contact-info">{{ contact.name }} - {{ contact.phone }}</span>
+                <div class="actions">
+                    <a href="{% url 'edit_contact' contact.id %}" class="edit-btn">Edit</a>
+                    <a href="{% url 'delete_contact' contact.id %}" class="delete-btn">Delete</a>
+                </div>
+            </li>
+        {% empty %}
+            <li class="empty">No contacts found.</li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        
+        const searchInput = document.querySelector('input[name="q"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.style.transition = "all 0.3s ease";
+            searchInput.style.width = "300px";
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.style.width = "250px";
+        });
+    </script>
+</body>
+</html>
